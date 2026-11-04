@@ -1,0 +1,15 @@
+{
+  "_note": "Provenance of every generated image. Model gpt-image-2.5-flare (Layer.ai), quality medium, batch 1, magenta (#FF00FF) chroma background for sprites. Workspace 2f56243b-eef9-40c6-a060-8e7c186b0d35, session bc017c85-0d5c-4dd3-9803-d01fb6162482. Full prompts are in the Layer session. hero_sheet is the style reference (reference_image) for every other job.",
+  "jobs": [
+    {"file": "hero_sheet.png", "inference_id": "1a423786-482f-4f25-9f31-ce0d1f9d2be3", "layer_file_id": "f17761fb-08e2-4ab5-88cd-3632c3f66929", "size": "1536x1536", "cu": 3.83, "layout": "3x3: hang, climb_a, climb_b, side, hit, fall, victory, mgr_hang, mgr_climb"},
+    {"file": "workers_sheet.png", "inference_id": "04b54e5f-102b-4266-ac44-b1acf0a3eae2", "layer_file_id": "9ea852a5-3f3c-458e-b13d-551d83a077a0", "size": "2048x2048", "cu": 6.8, "layout": "4x4: {hr,acc,mgmt,it,mkt}_{idle,ready,throw}, intern"},
+    {"file": "items_sheet.png", "inference_id": "a1bd697f-2355-49a6-a9cc-05edcf37cd17", "layer_file_id": "4a24a6d8-9536-4447-98d2-a01bb7629d5d", "size": "1536x1536", "cu": 3.83, "layout": "4x4: letter, paper_stack, calculator, binder, bs, ppt, crt, keyboard, keycap, mug, tshirt, confetti_box, badge, ac_unit, ficus, pigeon"},
+    {"file": "windows_sheet.png", "inference_id": "4c1e4238-433b-46bc-89fd-cc7dabe2de25", "layer_file_id": "9663f514-fce6-476e-84fa-c6d017b6d3be", "size": "2048x1536", "cu": 5.1, "layout": "5 closed (hr acc mgmt it mkt), 5 open, boarded, gold"},
+    {"file": "skyline.png", "inference_id": "ad0479e7-1b1a-4dca-b411-9ab3082b9922", "layer_file_id": "6cf39c04-618b-416c-93ca-2c6f40b5e1b4", "size": "1088x1920", "cu": 3.38, "layout": "background bg_sky"},
+    {"file": "penthouse.png", "inference_id": "a5c0b973-1712-424d-ab5c-6adb9699253e", "layer_file_id": "87d25fcc-2d14-422f-b602-86a34c4d11c0", "size": "1088x1920", "cu": 3.38, "layout": "background bg_penthouse (victory scene)"},
+    {"file": "ceo_sheet.png", "inference_id": "fecbff85-119c-4598-9e6b-1a20b9af2939", "layer_file_id": "3113bd5f-23e3-4df9-bac8-a2c5ffd08397", "size": "1536x1024", "cu": 2.55, "layout": "2x1: ceo_sit, ceo_cheer"},
+    {"file": "rooftop.png", "inference_id": "0cc356ce-bd77-48bb-9951-ef50ddfe33ca", "layer_file_id": "3690b534-19fa-4e16-a0d8-ca6766696fa0", "size": "1536x1024", "cu": 2.55, "layout": "single: rooftop penthouse exterior"},
+    {"file": "logo.png", "inference_id": "281add46-217e-4d12-a068-cd9fd83b18ac", "layer_file_id": "51e70b9a-2a94-4be1-92ee-eba325f3f232", "size": "1536x1024", "cu": 2.55, "layout": "single: title logo"}
+  ],
+  "total_cu": 33.97
+}
