@@ -1,34 +1,34 @@
 class_name LevelData
 extends RefCounted
-## The one level, as data. PoC scope (owner decision): ONE department, LEVEL_DEPT, over Cfg.FLOORS floors with a
-## difficulty ramp, then the CEO rooftop. DEPTS is the library of all five departments (projectiles, patterns,
-## jokes) so another department is a one-line change of LEVEL_DEPT.
-## patterns: [motion, item, weight, first floor it may appear on]. motion "burst" = three drops in a row down one
-## lane ("the full deck"): the lane stays dangerous longer, so the player has to reroute or wait.
+## The one level, as data: CORPORATE HQ = lobby + five departments x FLOORS_PER_DEPT floors (LEVEL_DEPTS, bottom to top)
+## + the CEO rooftop. Each department brings its own office colours, throwers, projectiles, patterns and catchphrase;
+## a global ramp over all floors (HazardDirector) makes the whole tower gradually harder.
+## patterns: [motion, item, weight, first floor INSIDE the department (1..3) it may appear on]. motion "burst" = three
+## drops in a row down one lane ("the full deck"): the lane stays dangerous longer, so the player has to reroute or wait.
 ## Blocked windows block the two middle rows of their floor in that column; the ledge rows
 ## (4f and 4f+3) are always free, so there is always a way around.
 
 const DEPTS := [
 	{"id": "hr", "name": "HUMAN RESOURCES", "short": "HR", "color": Color("ff6fb5"), "dark": Color("7a2a6a"),
 	 "subtitle": "WHERE COMPLAINTS GO TO DIE.", "shout": "WE VALUE YOUR CONTRIBUTION!",
-	 "interval": [2.7, 3.7], "max_active": 1, "warn": 1.25, "speed": 0.9,
-	 "patterns": [["drop", "paper_stack", 3, 1], ["sweep", "letter", 2, 2], ["lob", "paper_stack", 1, 4]]},
+	 "interval": [1.3, 1.8], "max_active": 1, "warn": 1.2, "speed": 0.92,
+	 "patterns": [["drop", "paper_stack", 3, 1], ["sweep", "letter", 2, 2], ["lob", "paper_stack", 1, 3]]},
 	{"id": "acc", "name": "ACCOUNTING", "short": "ACCOUNTING", "color": Color("5ed37a"), "dark": Color("1f5e34"),
 	 "subtitle": "EVERY PENNY COUNTED. NONE FOR YOU.", "shout": "NOT IN THE BUDGET!",
-	 "interval": [2.3, 3.2], "max_active": 2, "warn": 1.1, "speed": 1.0,
-	 "patterns": [["drop", "calculator", 3, 1], ["lob", "binder", 2, 3], ["sweep", "letter", 1, 2]]},
+	 "interval": [1.1, 1.6], "max_active": 2, "warn": 1.1, "speed": 1.0,
+	 "patterns": [["drop", "calculator", 3, 1], ["lob", "binder", 2, 2], ["sweep", "letter", 1, 2], ["burst", "calculator", 1, 3]]},
 	{"id": "mgmt", "name": "MANAGEMENT", "short": "MANAGEMENT", "color": Color("4f9dff"), "dark": Color("1d3a7a"),
 	 "subtitle": "PRODUCTIVITY IS EVERYONE ELSE'S PROBLEM.", "shout": "LET'S CIRCLE BACK!",
-	 "interval": [0.95, 1.4], "max_active": 2, "warn": 1.0, "speed": 1.08,
-	 "patterns": [["drop", "bs", 3, 1], ["sweep", "ppt", 2, 3], ["burst", "ppt", 2, 4], ["lob", "bs", 1, 6], ["double", "bs", 1, 9]]},
+	 "interval": [1.0, 1.45], "max_active": 2, "warn": 1.0, "speed": 1.04,
+	 "patterns": [["drop", "bs", 3, 1], ["sweep", "ppt", 2, 1], ["burst", "ppt", 2, 2], ["lob", "bs", 1, 2], ["double", "bs", 1, 3]]},
 	{"id": "it", "name": "IT DEPARTMENT", "short": "IT", "color": Color("38e8ff"), "dark": Color("12324a"),
 	 "subtitle": "YOUR TICKET IS VERY IMPORTANT TO US.", "shout": "WORKS ON MY MACHINE!",
-	 "interval": [1.75, 2.45], "max_active": 2, "warn": 0.95, "speed": 1.15,
-	 "patterns": [["drop", "crt", 3, 1], ["split", "keyboard", 2, 3], ["sweep", "keycap", 1, 2]]},
+	 "interval": [0.95, 1.4], "max_active": 3, "warn": 0.95, "speed": 1.08,
+	 "patterns": [["drop", "crt", 3, 1], ["split", "keyboard", 2, 1], ["sweep", "keycap", 1, 2], ["double", "crt", 1, 3]]},
 	{"id": "mkt", "name": "MARKETING", "short": "MARKETING", "color": Color("ffb43a"), "dark": Color("7a3a12"),
 	 "subtitle": "SYNERGY! DISRUPTION! FREE STICKERS!", "shout": "LET'S MAKE IT VIRAL!",
-	 "interval": [1.5, 2.2], "max_active": 3, "warn": 0.9, "speed": 1.22,
-	 "patterns": [["drop", "mug", 2, 1], ["double", "mug", 2, 4], ["lob", "tshirt", 2, 2], ["split", "confetti_box", 2, 3], ["sweep", "tshirt", 1, 2]]},
+	 "interval": [0.9, 1.35], "max_active": 3, "warn": 0.92, "speed": 1.12,
+	 "patterns": [["drop", "mug", 2, 1], ["double", "mug", 2, 1], ["lob", "tshirt", 2, 2], ["split", "confetti_box", 2, 2], ["sweep", "tshirt", 1, 2], ["burst", "mug", 1, 3]]},
 ]
 
 const ROOF := {"id": "roof", "name": "EXECUTIVE LEVEL", "short": "CEO", "color": Color("ffd34a"), "dark": Color("6a4a10"),
@@ -65,31 +65,40 @@ const BADGES := [[4, 11], [1, 23], [3, 39], [0, 51]]
 
 ## Ledge banners (corporate satire on the cornice bands): floor -> text
 const BANNERS := {
-	2: "SYNERGY IS NOT A BUZZWORD", 3: "WE'RE A FAMILY*", 4: "*NOT LEGALLY BINDING", 5: "THINK OUTSIDE THE BOX",
-	6: "BRING YOUR WHOLE SELF TO WORK", 7: "BUT NOT YOUR FEELINGS", 8: "ONE TEAM ONE DREAM",
-	9: "PIZZA FRIDAY = YOUR BONUS", 10: "LEAN IN. THEN LEAN OUT.", 11: "FAIL FAST (NOT YOU)",
-	12: "OUR PEOPLE ARE OUR GREATEST ASSET", 13: "ASSETS CAN BE LIQUIDATED", 14: "DISRUPT EVERYTHING",
-	15: "UNLIMITED VACATION (DO NOT USE)",
+	1: "PEOPLE FIRST (PROFITS FIRSTER)", 2: "WE'RE A FAMILY*", 3: "*NOT LEGALLY BINDING", 4: "EVERY CENT COUNTS",
+	7: "LEADERSHIP IS A JOURNEY", 10: "IT: IT'S ALWAYS DNS", 13: "BRAND IS A FEELING",
+	5: "PIZZA FRIDAY = YOUR BONUS", 6: "COST CENTRE OF THE MONTH: YOU",
+	8: "SYNERGY IS NOT A BUZZWORD", 9: "THINK OUTSIDE THE BOX",
+	11: "HAVE YOU TRIED RESTARTING?", 12: "PASSWORD MUST CONTAIN A SONNET",
+	14: "DISRUPT EVERYTHING", 15: "UNLIMITED VACATION (DO NOT USE)",
 }
 
-const LEVEL_DEPT := "mgmt"
+## Bottom to top. Floors 1-3 = first entry, 4-6 = second, ...
+const LEVEL_DEPTS := ["hr", "acc", "mgmt", "it", "mkt"]
+const FLOORS_PER_DEPT := 3
 
-static func level_dept() -> Dictionary:
+static func _by_id(id: String) -> Dictionary:
 	for d in DEPTS:
-		if d.id == LEVEL_DEPT:
+		if d.id == id:
 			return d
 	return DEPTS[0]
 
-## -1 lobby, 0 the level's department, 1 rooftop
+## -1 lobby, 0..4 department, 5 rooftop
 static func dept_index_for_floor(f: int) -> int:
 	if f <= 0:
 		return -1
 	if f > Cfg.FLOORS:
-		return 1
-	return 0
+		return LEVEL_DEPTS.size()
+	return mini((f - 1) / FLOORS_PER_DEPT, LEVEL_DEPTS.size() - 1)
 
 static func dept(i: int) -> Dictionary:
-	return ROOF if i >= 1 else level_dept()
+	if i >= LEVEL_DEPTS.size():
+		return ROOF
+	return _by_id(LEVEL_DEPTS[maxi(i, 0)])
+
+## 1..FLOORS_PER_DEPT: which floor of its department floor f is.
+static func floor_in_dept(f: int) -> int:
+	return (maxi(f, 1) - 1) % FLOORS_PER_DEPT + 1
 
 ## 0 on the first department floor .. 1 on the last: drives the difficulty ramp.
 static func ramp(f: int) -> float:

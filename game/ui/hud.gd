@@ -167,14 +167,13 @@ func _draw_bar() -> void:
 	var w := 26.0
 	var x := 9.0
 	_bar.draw_rect(Rect2(x - 5, -5, w + 10, h + 10), Color(0.07, 0.08, 0.18, 0.7))
-	var n := Cfg.FLOORS + 1.0
-	var seg := h / n
-	var dc: Color = LevelData.level_dept().color
-	for i in Cfg.FLOORS:
-		var y1 := h - seg * 0.5 - seg * (i + 1)
-		var c := dc.darkened(0.12 * (i % 2))
+	var seg := h / (Cfg.FLOORS + 1.0)
+	for f in range(1, Cfg.FLOORS + 1):
+		var y1 := h - seg * 0.5 - seg * f
+		var c: Color = LevelData.dept(LevelData.dept_index_for_floor(f)).color
+		c = c.darkened(0.12 * (f % 2))
 		c.a = 0.9
-		_bar.draw_rect(Rect2(x, y1, w, seg - 4), c)
+		_bar.draw_rect(Rect2(x, y1, w, seg - 2), c)
 	_bar.draw_rect(Rect2(x, h - seg * 0.5, w, seg * 0.5 - 2), Color("8a92a6"))
 	_bar.draw_rect(Rect2(x, 0, w, seg * 0.5 - 4), Color("ffd34a"))
 	_bar.draw_string(Art.font(), Vector2(x - 2, seg * 0.5 - 16), "$", HORIZONTAL_ALIGNMENT_CENTER, w + 4, 30, Color("6a4a10"))

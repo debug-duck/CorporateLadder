@@ -102,7 +102,7 @@ func glow_texture() -> Texture2D:
 func _add_pigeons() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
-	for f in [1, 2, 4, 5, 6]:
+	for f in [1, 3, 4, 7, 9, 10, 13, 15]:
 		var p := Sprite2D.new()
 		p.texture = Art.tex("pigeon")
 		p.scale = Vector2(0.3, 0.3)
@@ -174,9 +174,10 @@ func _draw() -> void:
 		draw_rect(Rect2(l - 14, base + 14, r - l + 28, 8), d.color.darkened(0.1) if f <= Cfg.FLOORS else Color("d9b44a"))
 		draw_rect(Rect2(l - 14, base + 22, r - l + 28, 14), Color(0, 0, 0, 0.16))
 		draw_rect(Rect2(l - 14, base - 14, r - l + 28, 36), LINE, false, 4.0)
-		if f == 1:
-			_sign(Vector2(Cfg.CENTER_X, base - 352), d.name, d.color, 46)
-		elif LevelData.BANNERS.has(f):
+		if f <= Cfg.FLOORS and LevelData.floor_in_dept(f) == 1:
+			# department sign right above the ledge where you enter the department
+			_sign(Vector2(Cfg.CENTER_X, base - 56), d.name, d.color, 42)
+		if LevelData.BANNERS.has(f):
 			_banner(Vector2(Cfg.CENTER_X, base - 352), LevelData.BANNERS[f])
 	# outline of the tower
 	draw_rect(Rect2(l, top, r - l, Cfg.STREET_Y - top), LINE, false, 6.0)

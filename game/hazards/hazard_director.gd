@@ -20,10 +20,10 @@ func _process(delta: float) -> void:
 		return
 	_active = _active.filter(func(a): return a.until > _now)
 	var di: int = run.dept_index()
-	if di != 0:
+	if di < 0 or di >= LevelData.LEVEL_DEPTS.size():
 		_timer = minf(_timer, 1.4)
 		return
-	var d: Dictionary = LevelData.level_dept()
+	var d: Dictionary = LevelData.dept(di)
 	var k := LevelData.ramp(_floor())
 	_peek_timer -= delta
 	if _peek_timer <= 0.0:
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	_timer -= delta
 	if _timer > 0.0:
 		return
-	var max_active := 1 if k < 0.1 else (2 if k < 0.45 else 3)
+	var max_active := mini(int(d.max_active), 1 if k < 0.1 else (2 if k < 0.45 else 3))
 	if _active.size() >= max_active or _active.any(func(a): return a.sweep):
 		stats.busy += 1
 		_timer = 0.25
@@ -54,7 +54,7 @@ func _floor() -> int:
 	return clampi(run.player.row / Cfg.ROWS_PER_FLOOR, 1, Cfg.FLOORS)
 
 func _pick_pattern(d: Dictionary) -> Array:
-	var pool: Array = d.patterns.filter(func(p): return _floor() >= int(p[3]))
+	var pool: Array = d.patterns.filter(func(p): return LevelData.floor_in_dept(_floor()) >= int(p[3]))
 	var total := 0.0
 	for p in pool:
 		total += float(p[2])
@@ -106,7 +106,7 @@ func _spawn(d: Dictionary) -> bool:
 	var kind: String = pat[0]
 	var item: String = pat[1]
 	var p = run.player
-	var warn: float = float(d.warn) * lerpf(1.2, 0.92, LevelData.ramp(_floor()))
+	var warn: float = float(d.warn) * lerpf(1.1, 0.95, LevelData.ramp(_floor()))
 	match kind:
 		"sweep":
 			if not _active.is_empty():
@@ -212,7 +212,7 @@ func _throw(w: OfficeWindow, item: String, motion: String, warn: float, d: Dicti
 	w.throw_item(item, warn)
 
 func _mult(d: Dictionary) -> float:
-	return float(d.speed) * lerpf(0.88, 1.15, LevelData.ramp(_floor()))
+	return float(d.speed) * lerpf(0.95, 1.06, LevelData.ramp(_floor()))
 
 func _maybe_shout(w: OfficeWindow, d: Dictionary) -> void:
 	if randf() < 0.22:

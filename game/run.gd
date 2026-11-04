@@ -279,7 +279,7 @@ func _on_moved(c: int, r: int) -> void:
 	hud.set_floor(f, d.name if di >= 0 else "LOBBY", d.color if di >= 0 else Color("ffd34a"))
 	if di > dept_i:
 		dept_i = di
-		if di == 0:
+		if di < LevelData.LEVEL_DEPTS.size():
 			hud.banner("WELCOME TO " + String(d.name), String(d.subtitle), d.color)
 			Sfx.play("ding", -2.0)
 		else:

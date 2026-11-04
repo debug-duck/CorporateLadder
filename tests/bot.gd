@@ -23,6 +23,8 @@ func _danger() -> Dictionary:
 		if not _noticed(m):
 			continue
 		if m.type == "lane":
+			if m.color.g > 0.5:
+				continue          # orange lane = a splitting object's path; it bursts above the player (centre stays safe)
 			if m.from_y < body.y:
 				cols[_col_of(m.x)] = true
 		else:
@@ -33,9 +35,13 @@ func _danger() -> Dictionary:
 			continue
 		if pr.motion == "sweep":
 			rows[int(round(pr.sweep_y))] = true
+		elif pr.motion == "split":
+			var sc := _col_of(pr.lane())
+			cols[sc - 1] = true
+			cols[sc + 1] = true
 		elif pr.position.y < body.y + 40:
 			cols[_col_of(pr.lane())] = true
-			if pr.motion == "split" or pr.motion == "drift":
+			if pr.motion == "drift":
 				cols[_col_of(pr.position.x)] = true
 	return {"cols": cols, "rows": rows}
 

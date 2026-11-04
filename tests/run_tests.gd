@@ -48,15 +48,18 @@ func _files(dir: String, ext: String) -> Array:
 	return out
 
 func test_assets() -> void:
-	var d := LevelData.level_dept()
 	var names := ["hang", "climb_a", "climb_b", "side", "hit", "fall", "victory", "mgr_hang", "mgr_climb", "intern", "life",
 		"badge", "ac_unit", "ficus", "pigeon", "win_boarded", "rooftop", "logo", "ceo_sit", "ceo_cheer", "bg_sky", "bg_penthouse"]
-	for pose in ["idle", "ready", "throw"]:
-		names.append("%s_%s" % [d.id, pose])
-	names.append("win_" + d.id)
-	names.append("open_" + d.id)
-	for p in d.patterns:
-		names.append(p[1])
+	for id in LevelData.LEVEL_DEPTS:
+		var d := LevelData._by_id(id)
+		ok(d.id == id, "department exists: " + id)
+		for pose in ["idle", "ready", "throw"]:
+			names.append("%s_%s" % [id, pose])
+		names.append("win_" + id)
+		names.append("open_" + id)
+		for p in d.patterns:
+			names.append(p[1])
+			ok(LevelData.PROJECTILES.has(p[1]), "projectile defined: " + p[1])
 	for k in LevelData.PROJECTILES:
 		names.append(k)
 	for n in names:
@@ -87,7 +90,10 @@ func test_level_layout() -> void:
 	ok(seen.has(Vector2i(2, Cfg.TOP_ROW)), "rooftop reachable")
 	for b in LevelData.BADGES:
 		ok(seen.has(Vector2i(int(b[0]), int(b[1]))), "badge reachable %s" % [b])
-	ok(LevelData.dept_index_for_floor(0) == -1 and LevelData.dept_index_for_floor(1) == 0 and LevelData.dept_index_for_floor(Cfg.FLOORS + 1) == 1, "dept mapping")
+	ok(LevelData.dept_index_for_floor(0) == -1 and LevelData.dept_index_for_floor(1) == 0 and LevelData.dept_index_for_floor(3) == 0, "dept mapping: HR floors 1-3")
+	ok(LevelData.dept_index_for_floor(4) == 1 and LevelData.dept_index_for_floor(15) == 4, "dept mapping: Accounting 4, Marketing 15")
+	ok(LevelData.dept(LevelData.dept_index_for_floor(Cfg.FLOORS + 1)).id == "roof", "dept mapping: rooftop")
+	ok(LevelData.LEVEL_DEPTS.size() * LevelData.FLOORS_PER_DEPT == Cfg.FLOORS, "departments fill the tower")
 	ok(is_equal_approx(LevelData.ramp(1), 0.0) and is_equal_approx(LevelData.ramp(Cfg.FLOORS), 1.0), "difficulty ramp 0..1")
 
 func test_save() -> void:
